@@ -8,21 +8,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    steps:  # 👈 This was wrongly indented in your version
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{secrets.EC2_HOST}}
-        username: ${{secrets.EC2_USERNAME}}
-        key: ${{secrets.EC2_KEY}}
-        script: |
-          pm2 stop all || true
-          rm -rf ${{ secrets.EC2_PATH }}
-          mkdir -p ${{ secrets.EC2_PATH }}
-          cd ${{secrets.EC2_PATH}}
-          git clone https://github.com/priyanjal1234/Github-Actions-Demo.git
-          npm install 
-          pm2 start index.js
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            pm2 stop all || true
+            rm -rf ${{ secrets.EC2_PATH }}
+            mkdir -p ${{ secrets.EC2_PATH }}
+            cd ${{ secrets.EC2_PATH }}
+            git clone https://github.com/priyanjal1234/Github-Actions-Demo.git .
+            npm install
+            pm2 start index.js
